@@ -59,10 +59,15 @@ RSpec.configure do |config|
           conversion_request: {
             type: 'object',
             properties: {
-              user_id: { type: 'integer', example: 123, description: 'ID of the user performing the conversion.' },
-              from_currency: { type: 'string', example: 'USD', enum: [ 'USD', 'BRL', 'EUR', 'JPY' ], description: 'Currency to convert from.' },
-              to_currency: { type: 'string', example: 'BRL', enum: [ 'USD', 'BRL', 'EUR', 'JPY' ], description: 'Currency to convert to.' },
-              amount: { type: 'number', format: 'float', example: 100.0, description: 'Amount in the original currency.' }
+              conversion_params: {
+                type: 'object',
+                properties: {
+                  user_id: { type: 'integer', example: 123, description: 'ID of the user performing the conversion.' },
+                  from_currency: { type: 'string', example: 'USD', enum: [ 'USD', 'BRL', 'EUR', 'JPY' ], description: 'Currency to convert from.' },
+                  to_currency: { type: 'string', example: 'BRL', enum: [ 'USD', 'BRL', 'EUR', 'JPY' ], description: 'Currency to convert to.' },
+                  amount: { type: 'number', format: 'float', example: 100.0, description: 'Amount in the original currency.' }
+                }
+              }
             },
             required: [ 'user_id', 'from_currency', 'to_currency', 'amount' ]
           }

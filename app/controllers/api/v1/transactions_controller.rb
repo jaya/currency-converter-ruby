@@ -1,20 +1,43 @@
 class Api::V1::TransactionsController < ApplicationController
   def index
+    user_id = params.permit(:user_id)
+
+    transactions =
+      if user_id[:user_id].present?
+        Transaction.where(user_id: user_id[:user_id])
+      else
+        Transaction.all
+      end
+
+    render json: transactions.map(&:as_json), status: :ok
   end
 
   def create
-    mock_response = {
-      "transaction_id": 42,
-      "user_id": 123,
-      "from_currency": "USD",
-      "to_currency": "BRL",
-      "from_value": 100,
-      "to_value": 525.32,
-      "rate": 5.2532,
-      "timestamp": "2024-05-19T18:00:00Z"
-    }
+    service_params = transaction_params.slice(:from_currency, :to_currency)
 
-    render json: mock_response, status: :created
+    service = CurrencyRateService.new(to_currency: service_params[:to_currency], from_currency: service_params[:from_currency])
+
+    result = service.call
+
+    if result.error?
+      render json: { message: result.error_message }, status: :unprocessable_entity
+      return
+    end
+
+    transaction = Transaction.new(
+      user_id: transaction_params[:user_id],
+      from_currency: transaction_params[:from_currency],
+      to_currency: transaction_params[:to_currency],
+      from_value: transaction_params[:amount],
+      to_value: result.payload,
+      rate: result.payload / transaction_params[:amount],
+    )
+
+    if transaction.save
+      render json: transaction.as_json, status: :created
+    else
+      render json: { message: transaction.errors.full_messages.join(", ") }, status: :unprocessable_entity
+    end
   end
 
   private

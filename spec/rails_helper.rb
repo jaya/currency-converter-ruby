@@ -77,3 +77,6 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+# Load support files from spec/support directory
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }

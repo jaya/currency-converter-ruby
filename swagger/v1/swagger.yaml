@@ -12,19 +12,19 @@ paths:
       - Transactions
       parameters: []
       responses:
-        201_created:
+        '201':
           description: transaction created
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/transaction"
-        422_unprocessable_entity:
+        '422':
           description: invalid request
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/error_object"
-        400_bad_request:
+        '400':
           description: bad request
           content:
             application/json:
@@ -43,11 +43,11 @@ paths:
       - name: user_id
         in: query
         description: User ID to filter transactions
-        required: true
+        required: false
         schema:
           type: integer
       responses:
-        200_ok:
+        '200':
           description: transactions list
           content:
             application/json:
@@ -55,18 +55,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/transaction"
-        400_bad_request:
-          description: user_id parameter missing
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/error_object"
-        404_not_found:
-          description: user not found or no transactions
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/error_object"
 servers:
 - url: http://{defaultHost}
   variables:
@@ -126,33 +114,36 @@ components:
     conversion_request:
       type: object
       properties:
-        user_id:
-          type: integer
-          example: 123
-          description: ID of the user performing the conversion.
-        from_currency:
-          type: string
-          example: USD
-          enum:
-          - USD
-          - BRL
-          - EUR
-          - JPY
-          description: Currency to convert from.
-        to_currency:
-          type: string
-          example: BRL
-          enum:
-          - USD
-          - BRL
-          - EUR
-          - JPY
-          description: Currency to convert to.
-        amount:
-          type: number
-          format: float
-          example: 100.0
-          description: Amount in the original currency.
+        conversion_params:
+          type: object
+          properties:
+            user_id:
+              type: integer
+              example: 123
+              description: ID of the user performing the conversion.
+            from_currency:
+              type: string
+              example: USD
+              enum:
+              - USD
+              - BRL
+              - EUR
+              - JPY
+              description: Currency to convert from.
+            to_currency:
+              type: string
+              example: BRL
+              enum:
+              - USD
+              - BRL
+              - EUR
+              - JPY
+              description: Currency to convert to.
+            amount:
+              type: number
+              format: float
+              example: 100.0
+              description: Amount in the original currency.
       required:
       - user_id
       - from_currency
