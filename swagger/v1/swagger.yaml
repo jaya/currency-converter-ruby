@@ -1,0 +1,161 @@
+---
+openapi: 3.0.1
+info:
+  title: Currency Converter API
+  version: v1
+  description: API for currency conversion and transaction tracking.
+paths:
+  "/api/v1/transactions":
+    post:
+      summary: Creates a currency conversion transaction
+      tags:
+      - Transactions
+      parameters: []
+      responses:
+        201_created:
+          description: transaction created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/transaction"
+        422_unprocessable_entity:
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error_object"
+        400_bad_request:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/conversion_request"
+    get:
+      summary: Lists transactions for a user
+      tags:
+      - Transactions
+      parameters:
+      - name: user_id
+        in: query
+        description: User ID to filter transactions
+        required: true
+        schema:
+          type: integer
+      responses:
+        200_ok:
+          description: transactions list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/transaction"
+        400_bad_request:
+          description: user_id parameter missing
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error_object"
+        404_not_found:
+          description: user not found or no transactions
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error_object"
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+- url: https://{productionHost}
+  variables:
+    productionHost:
+      default: localhost:3000
+components:
+  schemas:
+    error_object:
+      type: object
+      properties:
+        message:
+          type: string
+    transaction:
+      type: object
+      properties:
+        transaction_id:
+          type: integer
+          example: 42
+        user_id:
+          type: integer
+          example: 123
+        from_currency:
+          type: string
+          example: USD
+        to_currency:
+          type: string
+          example: BRL
+        from_value:
+          type: number
+          format: float
+          example: 100.0
+        to_value:
+          type: number
+          format: float
+          example: 525.32
+        rate:
+          type: number
+          format: float
+          example: 5.2532
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-05-19T18:00:00Z'
+      required:
+      - transaction_id
+      - user_id
+      - from_currency
+      - to_currency
+      - from_value
+      - to_value
+      - rate
+      - timestamp
+    conversion_request:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 123
+          description: ID of the user performing the conversion.
+        from_currency:
+          type: string
+          example: USD
+          enum:
+          - USD
+          - BRL
+          - EUR
+          - JPY
+          description: Currency to convert from.
+        to_currency:
+          type: string
+          example: BRL
+          enum:
+          - USD
+          - BRL
+          - EUR
+          - JPY
+          description: Currency to convert to.
+        amount:
+          type: number
+          format: float
+          example: 100.0
+          description: Amount in the original currency.
+      required:
+      - user_id
+      - from_currency
+      - to_currency
+      - amount
+  securitySchemes: {}

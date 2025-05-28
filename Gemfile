@@ -50,9 +50,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "shoulda-matchers", "~> 5.3"
+  gem "dotenv-rails"
 end
 
-group :development do
-  gem "rswag-api"
-  gem "rswag-ui"
-end
+gem "rswag"
