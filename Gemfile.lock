@@ -86,8 +86,12 @@ GEM
     brakeman (7.0.2)
       racc
     builder (3.3.0)
+    coderay (1.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
+    crack (1.0.0)
+      bigdecimal
+      rexml
     crass (1.0.6)
     date (3.4.1)
     debug (1.10.0)
@@ -104,18 +108,18 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
-    factory_bot (6.5.1)
-      activesupport (>= 6.1.0)
-    factory_bot_rails (6.4.4)
-      factory_bot (~> 6.5)
-      railties (>= 5.0.0)
-    faker (3.5.1)
-      i18n (>= 1.8.11, < 2)
+    faraday (2.13.1)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    hashdiff (1.2.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
@@ -150,9 +154,12 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
+    method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
+    net-http (0.6.0)
+      uri
     net-imap (0.5.8)
       date
       net-protocol
@@ -194,6 +201,9 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.4.0)
+    pry (0.15.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     psych (5.2.6)
       date
       stringio
@@ -247,6 +257,7 @@ GEM
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
+    rexml (3.4.1)
     rspec-core (3.13.4)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -349,6 +360,12 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.0.3)
     useragent (0.16.11)
+    vcr (6.3.1)
+      base64
+    webmock (3.25.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -372,14 +389,14 @@ DEPENDENCIES
   brakeman
   debug
   dotenv-rails
-  factory_bot_rails
-  faker
+  faraday (~> 2.13)
   kamal
   pg (~> 1.1)
+  pry
   puma (>= 5.0)
   rails (~> 8.0.2)
   rspec-rails (~> 8.0.0)
-  rswag
+  rswag (~> 2.16)
   rubocop-rails-omakase
   shoulda-matchers (~> 5.3)
   solid_cable
@@ -387,6 +404,8 @@ DEPENDENCIES
   solid_queue
   thruster
   tzinfo-data
+  vcr (~> 6.3)
+  webmock (~> 3.25)
 
 BUNDLED WITH
    2.5.22

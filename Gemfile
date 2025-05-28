@@ -47,10 +47,13 @@ group :development, :test do
 
   # QOL gems for development and tests
   gem "rspec-rails", "~> 8.0.0"
-  gem "factory_bot_rails"
-  gem "faker"
   gem "shoulda-matchers", "~> 5.3"
   gem "dotenv-rails"
+  gem "pry"
 end
 
-gem "rswag"
+gem "faraday", "~> 2.13"
+gem "rswag", "~> 2.16"
+
+gem "vcr", "~> 6.3", group: :test
+gem "webmock", "~> 3.25", group: :test
