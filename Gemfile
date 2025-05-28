@@ -44,4 +44,15 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # QOL gems for development and tests
+  gem "rspec-rails", "~> 8.0.0"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "shoulda-matchers", "~> 5.3"
+end
+
+group :development do
+  gem "rswag-api"
+  gem "rswag-ui"
 end
