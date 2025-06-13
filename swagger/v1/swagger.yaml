@@ -1,0 +1,145 @@
+---
+openapi: 3.0.1
+info:
+  title: Currency Converter API
+  version: v1
+  description: API for converting currencies and managing transactions.
+  contact:
+    name: Dalton Cézane
+    email: daltoncezane@email.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: http://localhost:3000
+  description: Local server
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: _yourapp_session
+security:
+- cookieAuth: []
+paths:
+  "/transactions":
+    get:
+      summary: List transactions
+      tags:
+      - Transactions
+      parameters:
+      - name: user_id
+        in: query
+        description: User ID (optional)
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: transactions listed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    from_cur:
+                      type: string
+                    to_cur:
+                      type: string
+                    from_val:
+                      type: number
+                    to_val:
+                      type: number
+                    rate:
+                      type: number
+                    timestamp:
+                      type: string
+                      format: date_time
+  "/transactions/convert":
+    post:
+      summary: Convert currency and create transaction
+      tags:
+      - Transactions
+      parameters: []
+      responses:
+        '201':
+          description: Transaction created.
+        '401':
+          description: Unauthorized.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from_cur:
+                  type: string
+                to_cur:
+                  type: string
+                from_val:
+                  type: number
+              required:
+              - from_cur
+              - to_cur
+              - from_val
+  "/users":
+    post:
+      summary: Register a new user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: User registered.
+        '422':
+          description: Invalid input.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - name
+                  - email
+                  - password
+              required:
+              - user
+  "/login":
+    post:
+      summary: User login
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: login successful
+        '401':
+          description: invalid credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password

@@ -1,0 +1,23 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Transactions" %>
+
+<h1>Transactions</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">User ID</th>
+      <th scope="col">From Currency</th>
+      <th scope="col">To Currency</th>
+      <th scope="col">From Value</th>
+      <th scope="col">To Value</th>
+      <th scope="col">Rate</th>
+      <th scope="col">Timestamp</th>
+    </tr>
+  </thead>
+  <tbody id="transactions">
+    <%= render @transactions %>
+  </tbody>
+</table>
+  
+<%= link_to "New Conversion", new_transaction_path, class: "btn btn-primary btn-lg" %>

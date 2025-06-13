@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  from_cur: MyString
+  to_cur: MyString
+  from_val: 9.99
+  to_val: 9.99
+  rate: 9.99
+  timestamp: 2025-06-09 17:33:56
+
+two:
+  user_id: 1
+  from_cur: MyString
+  to_cur: MyString
+  from_val: 9.99
+  to_val: 9.99
+  rate: 9.99
+  timestamp: 2025-06-09 17:33:56

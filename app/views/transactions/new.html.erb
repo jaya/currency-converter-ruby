@@ -1,0 +1,32 @@
+<% content_for :title, "New conversion" %>
+
+<h1 class="text-center mb-4">New conversion</h1>
+
+<p class="text-center">What conversion do you want to do now?</p>
+
+    <% if current_user %>
+      <p style="color: green"><%= notice %></p>
+      <%= form_with url: convert_transactions_path, method: :post, local: true, data: { turbo: false }, class: "card p-4 shadow-sm" do |form| %>
+        <div class="mb-3">
+          <%= form.label :from_cur, "From Currency", class: "form-label" %>
+          <%= form.select :from_cur, options_for_select(Transaction::CURRENCIES), { prompt: "Select currency" }, class: "form-select" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :to_cur, "To Currency", class: "form-label" %>
+          <%= form.select :to_cur, options_for_select(Transaction::CURRENCIES), { prompt: "Select currency" }, class: "form-select" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :from_val, "Amount", class: "form-label" %>
+          <%= form.number_field :from_val, step: :any, min: 0, class: "form-control" %>
+        </div>
+        <div class="text-end">
+          <%= form.submit "Convert", class: "btn btn-primary" %>
+          <%= link_to "See my transactions", transactions_path, class: "btn btn-secondary ms-2" %>
+        </div>
+      <% end %>
+    <% end%>
+
+<br>
+
+
+
