@@ -1,0 +1,65 @@
+services:
+  # 1. Use the “up” command, which builds and starts the containers:
+  # docker-compose up --build
+  #
+  # 2. Use a one-off run, which builds & starts a fresh “web” container just for your command:
+  # docker-compose run --rm web bin/rails db:create db:migrate
+  #
+  # 3. Rails console
+  # docker compose run --rm web bin/rails console
+  web: &base
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUBY_VERSION: "${RUBY_VERSION:-3.4.4}"
+    volumes:
+      - .:/rails
+      - sqlite_data:/rails/storage
+    working_dir: /rails
+    mem_limit: "512m"
+    memswap_limit: "512m"
+    cpus: "0.5"
+    environment:
+      CURRENCY_API_KEY: "${CURRENCY_API_KEY:-}"
+      JWT_SECRET: "${JWT_SECRET:-}"
+      RAILS_ENV: development
+      BUNDLE_DEPLOYMENT: "0"
+      BUNDLE_WITHOUT: "production"
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+      BUNDLE_FROZEN: "false"
+
+    ports:
+      - "3000:3000"
+    command: >
+      bash -lc "
+        bundle config set frozen false &&
+        bundle install --jobs=4 &&
+        bin/rails db:create &&
+        bin/rails db:migrate &&
+        bin/rails server -b 0.0.0.0 -p 3000
+      "
+
+  # Run tests
+  # docker compose run --rm test
+  # (optional) Guard rspec
+  # docker compose run --rm test bundle exec guard
+  test:
+    <<: *base
+    environment:
+      RAILS_ENV: test
+      CURRENCY_API_KEY: "test-key"
+      JWT_SECRET: "test-secret"
+    command: >
+      bash -lc "
+        bundle config set frozen false &&
+        bundle install --jobs=4 &&
+        bin/rails db:create &&
+        bin/rails db:migrate &&
+        bundle exec rspec --format documentation
+      "
+
+volumes:
+  sqlite_data:
+
